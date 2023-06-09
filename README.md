@@ -32,7 +32,13 @@
 
 We are building software for brands that sell their products online. We will provide software to them to manage purchase orders, allocate stock from these purchase orders that will be pushed up to the sales  update their inventory levels. This coding exercise is meant to explore these concepts to give each candidate an idea of what real world problems we are looking to solve, to give us a chance to see what it’s like to work together, all while assessing the candidates development skills.
 
+### Your Development Environment
+You will be running this on your local machine, using the IDE you are comfortable using. Please treat this like a real world scenario, and use the tools and resources you would normally use.
+
+You will need to be running node 19 or higher. There is an `.nvmrc` file in the project. If you have nvm installed, you can run `nvm use` to switch to the correct version. 
+
 ### Requirements
+It's likely we won't complete every requirement, but let's get as far as we can in the allotted time.
 
 - Ability to see a list of purchase orders, create, and edit them
 - Sensible validation for creation and editing of fields
@@ -45,29 +51,18 @@ We are building software for brands that sell their products online. We will pro
 - Seeded database
 
 ### To Start Exercise
+ - Run `npm install --global nx@latest`
  - Run `npm install`
- - Run `npx nx run api:serve:development`
- - Run `npx nx run client:serve:development`
+ - Run `nx run api:serve:development`
+ - Run `nx run client:serve:development`
 
 ### Schema
 Here is the schema we will use for this exercise.
-<pre>
-
-              ┌───────────────────┐            ┌───────────────────────────┐
-              │                   │            │                           │
-              │  purchase_orders  ├───────────<│  purchase_order_variants  │
-              │                   │            │                           │
-              └───────────────────┘            └───────────────────────────┘
-                                                             V
-                                                             │
-                                                             │
-                                                             │
-                   ┌─────────┐                        ┌──────┴─────┐
-                   │         │                        │            │
-                   │  items  ├───────────────────────<│  variants  │
-                   │         │                        │            │
-                   └─────────┘                        └────────────┘
-</pre>
+![er-diagram.png](docs/er-diagram.png)
+ - `items` are the parent of `variants`. Example: t-shirt or pants
+ - `variants` represent variations of items that we can sell. Example: t-shirt in red or blue
+ - `purchase_orders` represent the document we use to track variants we are ordering from vendors.
+ - `purchase_order_line_items` represent the line items on a purchase order, and are linked to variants.
 
 ### Explorations
 Now that the requirements above have been completed, let's explore the following concepts and questions:

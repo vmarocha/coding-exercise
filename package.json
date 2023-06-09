@@ -1,5 +1,9 @@
 {
   "name": "@gddy-coding-exercise/source",
+  "engines" : {
+    "npm" : ">=8.0.0",
+    "node" : ">=18.0.0"
+  },
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {},
