@@ -33,7 +33,6 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-/db/gddy.sqlite
 
 # System Files
 .DS_Store

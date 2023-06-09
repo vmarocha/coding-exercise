@@ -1,4 +1,11 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn} from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn
+} from 'typeorm';
 import {Variant} from "./variant.entity";
 
 @Entity('items')
@@ -11,4 +18,10 @@ export class Item {
 
   @OneToMany(() => Variant, variant => variant.item)
   variants: Variant[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

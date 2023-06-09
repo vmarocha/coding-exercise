@@ -1,4 +1,12 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  UpdateDateColumn,
+  CreateDateColumn
+} from 'typeorm';
 import {Item} from "./item.entity";
 
 @Entity('variants')
@@ -24,4 +32,10 @@ export class Variant {
   @ManyToOne(() => Item, item => item.variants)
   @JoinColumn([{name: "item_id", referencedColumnName: "id"}])
   item: Item;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

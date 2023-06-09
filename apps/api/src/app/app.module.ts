@@ -14,7 +14,7 @@ import {Variant} from "../items/entities/variant.entity";
         type: 'sqlite',
         database: 'db/gddy.sqlite',
         entities: [Item, Variant],
-        synchronize: true,
+        synchronize: false,
       }),
     }),
     ItemsModule,

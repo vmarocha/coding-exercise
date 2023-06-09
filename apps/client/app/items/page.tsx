@@ -11,7 +11,7 @@ interface Item {
 }
 
 async function getData(): Promise<Item[]> {
-  const res = await fetch('http://localhost:3100/api/items');
+  const res = await fetch('http://localhost:3100/api/items', {cache: 'no-cache'});
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }

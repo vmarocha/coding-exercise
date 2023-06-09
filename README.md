@@ -42,36 +42,32 @@ We are building software for brands that sell their products online. We will pro
 ### Starting Point
 
 - Monorepo with NestJS and NextJS powered application
-- Database seeder with items and variants
+- Seeded database
 
 ### To Start Exercise
  - Run `npm install`
- - Run `node ./seed_database.js`
- - Run `nx run api:serve:development`
- - Run `nx run client:serve:development`
+ - Run `npx nx run api:serve:development`
+ - Run `npx nx run client:serve:development`
 
-### Purchase Order Schema
+### Schema
+Here is the schema we will use for this exercise.
+<pre>
 
-```sql
-CREATE TABLE purchase_orders (
-    id INT PRIMARY KEY,
-    vendor_name VARCHAR(255) NOT NULL,
-    order_date DATE NOT NULL,
-    expected_delivery_date DATE NOT NULL,
-    created_at TIMESTAMP NULL,
-    updated_at TIMESTAMP NULL
-);
-
-CREATE TABLE purchase_order_variants (
-    id INT PRIMARY KEY,
-    purchase_order_id INT,
-    variant_id INT,
-    quantity INT NOT NULL,
-    total_cost DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP NULL,
-    updated_at TIMESTAMP NULL
-);
-```
+              ┌───────────────────┐            ┌───────────────────────────┐
+              │                   │            │                           │
+              │  purchase_orders  ├───────────<│  purchase_order_variants  │
+              │                   │            │                           │
+              └───────────────────┘            └───────────────────────────┘
+                                                             V
+                                                             │
+                                                             │
+                                                             │
+                   ┌─────────┐                        ┌──────┴─────┐
+                   │         │                        │            │
+                   │  items  ├───────────────────────<│  variants  │
+                   │         │                        │            │
+                   └─────────┘                        └────────────┘
+</pre>
 
 ### Explorations
 Now that the requirements above have been completed, let's explore the following concepts and questions:
