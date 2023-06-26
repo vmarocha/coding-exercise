@@ -59,14 +59,13 @@ It's likely we won't complete every requirement, but let's get as far as we can 
 ### Schema
 Here is the schema we will use for this exercise.
 ![er-diagram.png](docs/er-diagram.png)
- - `items` are the parent of `variants`. Example: t-shirt or pants
- - `variants` represent variations of items that we can sell. Example: t-shirt in red or blue
+ - `parent_items` are the parent of `items`. Example: t-shirt or pants
+ - `items` represent variations of items that we can sell. Example: t-shirt in red or blue
  - `purchase_orders` represent the document we use to track variants we are ordering from vendors.
  - `purchase_order_line_items` represent the line items on a purchase order, and are linked to variants.
 
 ### Explorations
-Now that the requirements above have been completed, let's explore the following concepts and questions:
+Once the requirements above have been completed, let's spend some time exploring the following:
 
-- What sort of changes would we need to make to variants and purchase orders to support multiple locations?
-- It's important to understand the cost of goods sold in order to understand our profit margin. What if the cost changes per purchase order?
-- A merchant wants to maximize the sales they have. We want to make sure they are able to sell stock they have on order. Presently Shopify only has the ability to sell stock that is on hand. Let’s talk through how we would implement presale and backorder on this sales channel.
+- It's important to understand the cost of goods sold in order to understand our profit margin. Costs for each item can vary per purchase order. Let's talk through how we would implement this.
+- Let's say a merchant's online store is able to only sell inventory that is on hand. In other words, inventory that the merchant has at their fulfillment center. Let’s talk through how we would implement presale / backorder to sell goods that they have on order from a vendor.
