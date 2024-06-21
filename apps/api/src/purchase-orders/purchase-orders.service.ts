@@ -10,21 +10,19 @@ export class PurchaseOrdersService {
   }
 
   // Just a note that the naming convention here seems inconsistent. In prisma, PurchaseOrders is plural while ParentItem is singular
-  async findAll(): Promise<PurchaseOrders[]> {
+  async findAll(sortField: string, sortOrder: string): Promise<PurchaseOrders[]> {
 
     const purchaseOrders = await this.prisma.purchaseOrders.findMany({
-      include: {
-        purchase_order_line_items: true,
-      },
-
-      // Sort by expected delivery date based on requirements
       /* 
-        There is a problem here that should be noted. Prisma maps DateTime fields to integers in SQLite. 
-        The seed data stored the dates in ISO format but when creating or update records, they will be updated to integers which will make it seem like the sort is broken. 
+        There is a problem here that should be noted between Prisma and SQLite specifically for dates. Prisma maps DateTime fields to a numeric in SQLite. 
+        The seed data stored the dates in ISO format but when creating or update records, it will be stored as an integer which will make it seem like the sort is broken. 
         For more info, see: https://github.com/prisma/prisma/issues/8510
       */
       orderBy: {
-        expected_delivery_date: 'asc', 
+        [sortField]: sortOrder,
+      },
+      include: {
+        purchase_order_line_items: true,
       },
     });
 

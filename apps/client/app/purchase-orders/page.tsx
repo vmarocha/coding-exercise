@@ -1,13 +1,22 @@
 import { PurchaseOrder } from '../interfaces';
 import Link from 'next/link';
 
-const fetchPurchaseOrders = async (): Promise<PurchaseOrder[]> => {
-  const res = await fetch('http://localhost:3100/api/purchase-orders', { cache: 'no-cache' });
+const fetchPurchaseOrders = async (sortField: string, sortOrder: string): Promise<PurchaseOrder[]> => {
+  const res = await fetch(`http://localhost:3100/api/purchase-orders?sortField=${sortField}&sortOrder=${sortOrder}`, { cache: 'no-cache' });
   return res.json();
 };
 
-const PurchaseOrdersPage = async () => {
-  const purchaseOrders = await fetchPurchaseOrders();
+const PurchaseOrdersPage = async ({ searchParams }: { searchParams: { sortField?: string, sortOrder?: string } }) => {
+  // Implementing server side sorting to keep the code clean and since there aren't a lot of records, the performance hit is not noticable.
+  // Client side sorting would definitely be better if we expect to be handling larger datasets
+  const sortField = searchParams.sortField || 'expected_delivery_date';
+  const sortOrder = searchParams.sortOrder || 'asc';
+
+  const purchaseOrders = await fetchPurchaseOrders(sortField, sortOrder);
+
+  const getSortOrder = (field: string) => {
+    return field === sortField && sortOrder === 'asc' ? 'desc' : 'asc';
+  };
 
   return (
     <div className="container mx-auto p-4 bg-base-100 shadow-md rounded-lg">
@@ -15,10 +24,18 @@ const PurchaseOrdersPage = async () => {
       <table className="table-auto w-full bg-base-100 text-sm rounded-lg shadow-md">
         <thead>
           <tr className="bg-accent-content text-base-100">
-            <th className="p-4 text-left">Purchase Order Number</th>
-            <th className="p-4 text-left">Vendor Name</th>
-            <th className="p-4 text-left">Delivery Date</th>
-            <th className="p-4 text-left">Order Date</th>
+          <th className="p-4 text-left">
+              <Link href={`/purchase-orders?sortField=id&sortOrder=${getSortOrder('id')}`} className="cursor-pointer">Purchase Order Number</Link>
+            </th>
+            <th className="p-4 text-left">
+              <Link href={`/purchase-orders?sortField=vendor_name&sortOrder=${getSortOrder('vendor_name')}`} className="cursor-pointer">Vendor Name</Link>
+            </th>
+            <th className="p-4 text-left">
+              <Link href={`/purchase-orders?sortField=expected_delivery_date&sortOrder=${getSortOrder('expected_delivery_date')}`} className="cursor-pointer">Delivery Date</Link>
+            </th>
+            <th className="p-4 text-left">
+              <Link href={`/purchase-orders?sortField=order_date&sortOrder=${getSortOrder('order_date')}`} className="cursor-pointer">Order Date</Link>
+            </th>
             <th className="p-4 text-left">Total Quantity</th>
             <th className="p-4 text-left">Total Cost of Goods</th>
             <th className="p-4 text-left">Actions</th>

@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Logger
+  Query
 } from '@nestjs/common';
 import { PurchaseOrdersService } from './purchase-orders.service';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
@@ -21,8 +21,11 @@ export class PurchaseOrdersController {
   }
 
   @Get()
-  findAll() {
-    return this.purchaseOrdersService.findAll();
+  findAll(
+    @Query('sortField') sortField = 'expected_delivery_date',
+    @Query('sortOrder') sortOrder = 'asc',
+  ) {
+    return this.purchaseOrdersService.findAll(sortField, sortOrder);
   }
 
   @Get(':id')
