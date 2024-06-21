@@ -1,10 +1,11 @@
+// This is the only client component so far in the application due to the need for interactivity
 'use client'
 
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { PurchaseOrder, Item, ParentItem } from '../interfaces';
+import { PurchaseOrder, Item } from '../interfaces';
 
 // This component is passed in the Purchase Order and whether we are creating or editing
 interface PurchaseOrderFormProps {
@@ -35,7 +36,7 @@ const validationSchema = Yup.object().shape({
 const fetchItems = async (): Promise<Item[]> => {
   const res = await fetch('http://localhost:3100/api/parent-items');
   const data = await res.json();
-  const items = data.flatMap((parent: { items: Item[] }) => parent.items);  
+  const items = data.flatMap((parent: { items: Item[] }) => parent.items);
   return [{ id: 0, name: 'Select an item', sku: '', price: 0 }, ...items];
 };
 
@@ -70,12 +71,10 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mo
 
   // On form submission, either call the api that will create a Purchase Order or the api that will update a Purchase Order
   const onSubmit = async (data: Omit<PurchaseOrder, 'id'>) => {
-    const url = mode === 'create' 
-      ? 'http://localhost:3100/api/purchase-orders' 
+    const url = mode === 'create'
+      ? 'http://localhost:3100/api/purchase-orders'
       : `http://localhost:3100/api/purchase-orders/${purchaseOrder?.id}`;
     const method = mode === 'create' ? 'POST' : 'PATCH';
-    
-    console.log("Submit Called on Purchase Order")
 
     await fetch(url, {
       method,
@@ -88,72 +87,72 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mo
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Vendor Name</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto p-4 bg-base-100 shadow-md rounded-lg">
+      <div className="mb-4">
+        <label className="block text-accent-content">Vendor Name</label>
         <Controller
           name="vendor_name"
           control={control}
-          render={({ field }) => <input {...field} />}
+          render={({ field }) => <input {...field} className="mt-1 block w-full border border-accent rounded-md shadow-sm" />}
         />
-        {errors.vendor_name && <p>{errors.vendor_name.message}</p>}
+        {errors.vendor_name && <p className="text-red-500 text-xs">{errors.vendor_name.message}</p>}
       </div>
-      <div>
-        <label>Order Date</label>
+      <div className="mb-4">
+        <label className="block text-accent-content">Order Date</label>
         <Controller
           name="order_date"
           control={control}
-          render={({ field }) => <input type="date" {...field} />}
+          render={({ field }) => <input type="date" {...field} className="mt-1 block w-full border border-accent rounded-md shadow-sm" />}
         />
-        {errors.order_date && <p>{errors.order_date.message}</p>}
+        {errors.order_date && <p className="text-red-500 text-xs">{errors.order_date.message}</p>}
       </div>
-      <div>
-        <label>Expected Delivery Date</label>
+      <div className="mb-4">
+        <label className="block text-accent-content">Expected Delivery Date</label>
         <Controller
           name="expected_delivery_date"
           control={control}
-          render={({ field }) => <input type="date" {...field} />}
+          render={({ field }) => <input type="date" {...field} className="mt-1 block w-full border border-accent rounded-md shadow-sm" />}
         />
-        {errors.expected_delivery_date && <p>{errors.expected_delivery_date.message}</p>}
+        {errors.expected_delivery_date && <p className="text-red-500 text-xs">{errors.expected_delivery_date.message}</p>}
       </div>
-      <div>
-        <h3>Line Items</h3>
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold text-accent-content">Line Items</h3>
         {fields.map((field, index) => (
-          <div key={field.id}>
-            <label>Item</label>
+          <div key={field.id} className="mb-2">
+            <label className="block text-accent-content">Item</label>
             <Controller
               name={`purchase_order_line_items.${index}.item_id`}
               control={control}
               defaultValue={field.item_id}
               render={({ field: selectField }) => (
-                <select {...selectField}>
+                <select {...selectField} className="mt-1 block w-full border border-accent rounded-md shadow-sm">
                   {items.map((item) => (
                     <option key={item.id} value={item.id}>{item.name}</option>
                   ))}
                 </select>
               )}
             />
-            {errors.purchase_order_line_items?.[index]?.item_id && <p>{errors.purchase_order_line_items?.[index]?.item_id?.message}</p>}
-            <label>Quantity</label>
+            {errors.purchase_order_line_items?.[index]?.item_id && <p className="text-red-500 text-xs">{errors.purchase_order_line_items?.[index]?.item_id?.message}</p>}
+            <label className="block text-accent-content">Quantity</label>
             <Controller
               name={`purchase_order_line_items.${index}.quantity`}
               control={control}
-              render={({ field }) => <input type="number" {...field} />}
+              render={({ field }) => <input type="number" {...field} className="mt-1 block w-full border border-accent rounded-md shadow-sm" />}
             />
-            {errors.purchase_order_line_items?.[index]?.quantity && <p>{errors.purchase_order_line_items?.[index]?.quantity?.message}</p>}
-            <label>Unit Cost</label>
+            {errors.purchase_order_line_items?.[index]?.quantity && <p className="text-red-500 text-xs">{errors.purchase_order_line_items?.[index]?.quantity?.message}</p>}
+            <label className="block text-accent-content">Unit Cost</label>
             <Controller
               name={`purchase_order_line_items.${index}.unit_cost`}
               control={control}
-              render={({ field }) => <input type="number" {...field} />}
+              render={({ field }) => <input type="number" {...field} className="mt-1 block w-full border border-accent rounded-md shadow-sm" />}
             />
-            {errors.purchase_order_line_items?.[index]?.unit_cost && <p>{errors.purchase_order_line_items?.[index]?.unit_cost?.message}</p>}
-            <button type="button" onClick={() => remove(index)}>Remove Line Item</button>
+            {errors.purchase_order_line_items?.[index]?.unit_cost && <p className="text-red-500 text-xs">{errors.purchase_order_line_items?.[index]?.unit_cost?.message}</p>}
+            <button type="button" onClick={() => remove(index)} className="mt-2 text-red-500">Remove Line Item</button>
           </div>
         ))}
-        <button type="button" onClick={() => append({ id: 0, item_id: 0, quantity: 0, unit_cost: 0 })}>Add Line Item</button>
+        <button type="button" onClick={() => append({ id: 0, item_id: 0, quantity: 0, unit_cost: 0 })} className="mt-4 text-blue-500">Add Line Item</button>
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded-md shadow-sm">Submit</button>
     </form>
   );
 };
