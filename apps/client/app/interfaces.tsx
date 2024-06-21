@@ -18,6 +18,8 @@ export interface PurchaseOrder {
     order_date: string;
     expected_delivery_date: string;
     purchase_order_line_items: PurchaseOrderLineItem[];
+    total_quantity: number;
+    total_cost: number;
 }
 
 export interface PurchaseOrderLineItem {

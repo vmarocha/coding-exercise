@@ -28,6 +28,12 @@ const PurchaseOrdersPage = async () => {
               Order Date
             </th>
             <th className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400 text-left">
+              Total Quantity
+            </th>
+            <th className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400 text-left">
+              Total Costs of Goods
+            </th>
+            <th className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400 text-left">
               Actions
             </th>
           </tr>
@@ -42,10 +48,16 @@ const PurchaseOrdersPage = async () => {
                 {purchaseOrder.vendor_name}
               </td>
               <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                {new Date(purchaseOrder.expected_delivery_date).toLocaleDateString()}
+                {purchaseOrder.expected_delivery_date.substring(0, 10)}
               </td>
               <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                {new Date(purchaseOrder.order_date).toLocaleDateString()}
+                {purchaseOrder.order_date.substring(0, 10)}
+              </td>
+              <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                {purchaseOrder.total_quantity}
+              </td>
+              <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                {purchaseOrder.total_cost}
               </td>
               <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
                 <Link href={`/purchase-orders/${purchaseOrder.id}`}>Edit</Link>

@@ -11,10 +11,7 @@ async function getData(): Promise<ParentItem[]> {
 
 export default async function Index() {
   const data = await getData()
-
-  console.log("DATA:")
-  console.log(data)
-
+  
   return (
     <>
       <h1 className="text-2xl">Parent Items</h1>

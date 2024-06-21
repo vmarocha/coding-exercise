@@ -1,17 +1,18 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { PurchaseOrder, Item, ParentItem } from '../interfaces';
 
+// This component is passed in the Purchase Order and whether we are creating or editing
 interface PurchaseOrderFormProps {
   purchaseOrder?: PurchaseOrder;
   mode: 'create' | 'edit';
 }
 
+// Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
   id: Yup.number().required('Purchase Order is required'),
   vendor_name: Yup.string().required('Vendor name is required'),
@@ -24,9 +25,13 @@ const validationSchema = Yup.object().shape({
       quantity: Yup.number().required('Quantity is required').positive().integer(),
       unit_cost: Yup.number().required('Unit cost is required').positive(),
     })
-  ).required()
+  ).required(),
+  total_quantity: Yup.number().notRequired(),
+  total_cost: Yup.number().notRequired(),
 });
 
+// Fetch items to use in the dropdown of the purchase order line items
+// TODO: This can be moved to a Server Component
 const fetchItems = async (): Promise<Item[]> => {
   const res = await fetch('http://localhost:3100/api/parent-items');
   const data = await res.json();
@@ -36,24 +41,26 @@ const fetchItems = async (): Promise<Item[]> => {
 
 const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mode }) => {
   const [items, setItems] = useState<Item[]>([]);
-  const router = useRouter();
 
   useEffect(() => {
     fetchItems().then(setItems);
   }, []);
 
+  // Initialize the form with react-hook-form
   const { control, handleSubmit, formState: { errors } } = useForm<PurchaseOrder>({
     defaultValues: {
+      id: purchaseOrder?.id || 0,
       vendor_name: purchaseOrder?.vendor_name || '',
       order_date: purchaseOrder?.order_date.substring(0, 10) || '',
       expected_delivery_date: purchaseOrder?.expected_delivery_date.substring(0, 10) || '',
       purchase_order_line_items: purchaseOrder?.purchase_order_line_items.map(lineItem => ({
+        id: lineItem.id || 0,
         item_id: lineItem.item_id,
         quantity: lineItem.quantity,
         unit_cost: lineItem.unit_cost,
       })) || [{ id: 0, item_id: 0, quantity: 0, unit_cost: 0 }]
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any, // Casting to any to get rid of TypeScript error that is not actually an issue
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -61,19 +68,23 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mo
     name: 'purchase_order_line_items'
   });
 
+  // On form submission, either call the api that will create a Purchase Order or the api that will update a Purchase Order
   const onSubmit = async (data: Omit<PurchaseOrder, 'id'>) => {
     const url = mode === 'create' 
       ? 'http://localhost:3100/api/purchase-orders' 
       : `http://localhost:3100/api/purchase-orders/${purchaseOrder?.id}`;
     const method = mode === 'create' ? 'POST' : 'PATCH';
     
+    console.log("Submit Called on Purchase Order")
+
     await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
 
-    router.push('/purchase-orders');
+    // Navigate to the list page and reload to ensure server-side rendering takes place
+    window.location.href = '/purchase-orders';
   };
 
   return (

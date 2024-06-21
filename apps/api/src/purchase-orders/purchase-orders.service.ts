@@ -12,19 +12,22 @@ export class PurchaseOrdersService {
   // The naming convention here seems inconsistent. In prisma, PurchaseOrders is plural while ParentItem is singular
   async findAll(): Promise<PurchaseOrders[]> {
 
-    // Sort by expected delivery date based on requirements
-    return this.prisma.purchaseOrders.findMany({
+    const purchaseOrders = await this.prisma.purchaseOrders.findMany({
       include: {
-        purchase_order_line_items: {
-          include: {
-            item: true, // Include the item object for each purchase order line item
-          },
-        },
+        purchase_order_line_items: true,
       },
+
+      // Sort by expected delivery date based on requirements
       orderBy: {
         expected_delivery_date: 'asc', 
       },
     });
+
+    return purchaseOrders.map(order => ({
+      ...order,
+      total_quantity: order.purchase_order_line_items.reduce((sum, item) => sum + item.quantity, 0),
+      total_cost: order.purchase_order_line_items.reduce((sum, item) => sum + item.quantity * Number(item.unit_cost), 0),
+    }));
   }
   
   async create(createPurchaseOrderDto: CreatePurchaseOrderDto): Promise<PurchaseOrders> {
@@ -44,7 +47,7 @@ export class PurchaseOrdersService {
     });
   }
 
-  async update(id: number, updatePurchaseOrderDto: UpdatePurchaseOrderDto): Promise<PurchaseOrders> {
+  async update(id: number, updatePurchaseOrderDto: UpdatePurchaseOrderDto): Promise<PurchaseOrders> {    
     return this.prisma.purchaseOrders.update({
       where: { id },
       data: {
