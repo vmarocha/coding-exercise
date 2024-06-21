@@ -18,7 +18,14 @@ const validationSchema = Yup.object().shape({
   id: Yup.number().required('Purchase Order is required'),
   vendor_name: Yup.string().required('Vendor name is required'),
   order_date: Yup.string().required('Order date is required'),
-  expected_delivery_date: Yup.string().required('Expected delivery date is required'),
+  expected_delivery_date: Yup.string().required('Expected delivery date is required').test(
+    'is-greater',
+    'Expected delivery date must be after the order date',
+    function(value) {
+      const { order_date } = this.parent;
+      return new Date(order_date) < new Date(value);
+    }
+  ),
   purchase_order_line_items: Yup.array().of(
     Yup.object().shape({
       id: Yup.number().required('Purchase Order Line Item is required'),

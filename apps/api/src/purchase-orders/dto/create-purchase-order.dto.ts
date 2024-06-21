@@ -1,8 +1,9 @@
-import { IsDate, IsString, IsArray, IsNumber, ValidateNested } from 'class-validator';
+import { IsDateString, IsString, IsArray, IsNumber, ValidateNested, ValidateIf, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class PurchaseOrderLineItemDto {
     @IsNumber()
+    @Min(1)
     item_id: number;
     
     @IsNumber()
@@ -16,11 +17,11 @@ export class CreatePurchaseOrderDto {
   @IsString()
   vendor_name: string;
 
-  @IsDate()
-  @Type(() => Date)
+  @IsDateString()
+  @ValidateIf(o => new Date(o.order_date) < new Date(o.expected_delivery_date))
   expected_delivery_date: Date;
 
-  @IsDate()
+  @IsDateString()
   order_date: Date;
 
   @IsArray()
