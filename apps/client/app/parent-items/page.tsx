@@ -1,14 +1,4 @@
-interface Item {
-  id: number;
-  name: string;
-  sku: string;
-}
-
-interface ParentItem {
-  id: number;
-  name: string;
-  items: Item[];
-}
+import { ParentItem, Item } from "../interfaces";
 
 async function getData(): Promise<ParentItem[]> {
   const res = await fetch('http://localhost:3100/api/parent-items', {cache: 'no-cache'});
@@ -21,6 +11,9 @@ async function getData(): Promise<ParentItem[]> {
 
 export default async function Index() {
   const data = await getData()
+
+  console.log("DATA:")
+  console.log(data)
 
   return (
     <>

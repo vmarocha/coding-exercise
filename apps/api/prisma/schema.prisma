@@ -18,6 +18,7 @@ model Item {
   created_at     DateTime?
   updated_at     DateTime?
 
+  purchase_order_line_items PurchaseOrderLineItems[]
   @@map("items")
 }
 
@@ -36,6 +37,7 @@ model PurchaseOrderLineItems {
   id                Int            @id @default(autoincrement())
   purchase_order    PurchaseOrders @relation(fields: [purchase_order_id], references: [id])
   purchase_order_id Int
+  item              Item   @relation(fields: [item_id], references: [id])
   item_id           Int
   quantity          Int
   unit_cost         Decimal
