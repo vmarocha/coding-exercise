@@ -42,7 +42,6 @@ export class PurchaseOrdersController {
     @Param('id') id: string,
     @Body() updatePurchaseOrderDto: UpdatePurchaseOrderDto
   ) {
-    console.log(updatePurchaseOrderDto);
     return this.purchaseOrdersService.update(+id, updatePurchaseOrderDto);
   }
 }
