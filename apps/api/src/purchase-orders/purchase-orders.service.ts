@@ -37,8 +37,8 @@ export class PurchaseOrdersService {
     return this.prisma.purchaseOrders.create({
       data: {
         vendor_name: createPurchaseOrderDto.vendor_name,
-        order_date: new Date(createPurchaseOrderDto.order_date),
-        expected_delivery_date: new Date(createPurchaseOrderDto.expected_delivery_date),
+        order_date: createPurchaseOrderDto.order_date,
+        expected_delivery_date: createPurchaseOrderDto.expected_delivery_date,
         purchase_order_line_items: {
           create: createPurchaseOrderDto.purchase_order_line_items.map(item => ({
             item_id: item.item_id,
@@ -55,8 +55,8 @@ export class PurchaseOrdersService {
       where: { id },
       data: {
         vendor_name: updatePurchaseOrderDto.vendor_name,
-        order_date: updatePurchaseOrderDto.order_date ? new Date(updatePurchaseOrderDto.order_date) : undefined,
-        expected_delivery_date: updatePurchaseOrderDto.expected_delivery_date ? new Date(updatePurchaseOrderDto.expected_delivery_date) : undefined,
+        order_date: updatePurchaseOrderDto.order_date,
+        expected_delivery_date: updatePurchaseOrderDto.expected_delivery_date,
         purchase_order_line_items: {
           // Delete existing line items and recreate
           // The tradeoff here is between keeping the code very simple and avoiding unneccessry delete operations 

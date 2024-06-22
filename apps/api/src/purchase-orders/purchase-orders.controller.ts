@@ -5,7 +5,9 @@ import {
   Body,
   Patch,
   Param,
-  Query
+  Query,
+  UsePipes,
+  ValidationPipe
 } from '@nestjs/common';
 import { PurchaseOrdersService } from './purchase-orders.service';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
@@ -16,6 +18,7 @@ export class PurchaseOrdersController {
   constructor(private readonly purchaseOrdersService: PurchaseOrdersService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createPurchaseOrderDto: CreatePurchaseOrderDto) {
     return this.purchaseOrdersService.create(createPurchaseOrderDto);
   }
@@ -34,10 +37,12 @@ export class PurchaseOrdersController {
   }
 
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id') id: string,
     @Body() updatePurchaseOrderDto: UpdatePurchaseOrderDto
   ) {
+    console.log(updatePurchaseOrderDto);
     return this.purchaseOrdersService.update(+id, updatePurchaseOrderDto);
   }
 }

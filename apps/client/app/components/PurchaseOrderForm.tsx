@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
   expected_delivery_date: Yup.string().required('Expected delivery date is required').test(
     'is-greater',
     'Expected delivery date must be after the order date',
-    function(value) {
+    function (value) {
       const { order_date } = this.parent;
       return new Date(order_date) < new Date(value);
     }
@@ -49,6 +49,7 @@ const fetchItems = async (): Promise<Item[]> => {
 
 const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mode }) => {
   const [items, setItems] = useState<Item[]>([]);
+  const [serverErrors, setServerErrors] = useState<string[]>([]);
 
   useEffect(() => {
     fetchItems().then(setItems);
@@ -83,18 +84,34 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mo
       : `http://localhost:3100/api/purchase-orders/${purchaseOrder?.id}`;
     const method = mode === 'create' ? 'POST' : 'PATCH';
 
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-    // Navigate to the list page and reload to ensure server-side rendering takes place
-    window.location.href = '/purchase-orders';
+      if (!response.ok) {
+        const errorData = await response.json();
+        setServerErrors(errorData.message || ['An error occurred']);
+      } else {
+        // Navigate to the list page and reload to ensure server-side rendering takes place
+        window.location.href = '/purchase-orders';
+      }
+    } catch (error) {
+      setServerErrors(['An error occurred']);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto p-4 bg-base-100 shadow-md rounded-lg">
+      {serverErrors.length > 0 && (
+        <div className="mb-4 text-red-600">
+          {serverErrors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
       <div className="mb-4">
         <label className="block text-accent-content">Vendor Name</label>
         <Controller
