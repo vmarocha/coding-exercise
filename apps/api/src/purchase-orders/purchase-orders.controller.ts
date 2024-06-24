@@ -38,7 +38,11 @@ export class PurchaseOrdersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.purchaseOrdersService.findOne(+id);
+    const numericId = Number(id);
+    if (isNaN(numericId)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+    return this.purchaseOrdersService.findOne(numericId);
   }
 
   @Patch(':id')
@@ -47,6 +51,10 @@ export class PurchaseOrdersController {
     @Param('id') id: string,
     @Body() updatePurchaseOrderDto: UpdatePurchaseOrderDto
   ) {
-    return this.purchaseOrdersService.update(+id, updatePurchaseOrderDto);
+    const numericId = Number(id);
+    if (isNaN(numericId)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+    return this.purchaseOrdersService.update(numericId, updatePurchaseOrderDto);
   }
 }

@@ -30,7 +30,11 @@ export class GoodsReceiptsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.goodsReceiptsService.findOne(+id);
+    const numericId = Number(id);
+    if (isNaN(numericId)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+    return this.goodsReceiptsService.findOne(numericId);
   }
 
   @Patch(':id')
