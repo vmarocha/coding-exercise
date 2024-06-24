@@ -35,10 +35,11 @@ const SupplierInvoiceForm: React.FC<SupplierInvoiceFormProps> = ({ supplierInvoi
       purchase_order_id: supplierInvoice?.purchase_order_id || 0,
       invoice_date: supplierInvoice?.invoice_date.substring(0, 10) || '',
       line_items: supplierInvoice?.line_items.map(lineItem => ({
+        id: lineItem.id,
         item_id: lineItem.item_id,
         quantity_invoiced: lineItem.quantity_invoiced,
         unit_cost: lineItem.unit_cost,
-      })) || [{ item_id: 0, quantity_invoiced: 0, unit_cost: 0 }]
+      })) || [{ id: 0, item_id: 0, quantity_invoiced: 0, unit_cost: 0 }]
     },
     resolver: yupResolver(validationSchema) as any,
   });
@@ -144,7 +145,7 @@ const SupplierInvoiceForm: React.FC<SupplierInvoiceFormProps> = ({ supplierInvoi
             <button type="button" onClick={() => remove(index)} className="mt-2 text-red-500">Remove Line Item</button>
           </div>
         ))}
-        <button type="button" onClick={() => append({ item_id: 0, quantity_invoiced: 0, unit_cost: 0 })} className="mt-4 text-blue-500">Add Line Item</button>
+        <button type="button" onClick={() => append({ id: 0, item_id: 0, quantity_invoiced: 0, unit_cost: 0 })} className="mt-4 text-blue-500">Add Line Item</button>
       </div>
       <button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded-md shadow-sm">Submit</button>
     </form>

@@ -60,8 +60,6 @@ export class PurchaseOrdersService {
         order_date: updatePurchaseOrderDto.order_date,
         expected_delivery_date: updatePurchaseOrderDto.expected_delivery_date,
         purchase_order_line_items: {
-          // Delete existing line items and recreate
-          // The tradeoff here is between keeping the code very simple and avoiding unneccessry delete operations 
           deleteMany: {
             purchase_order_id: id,
           },

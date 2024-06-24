@@ -17,8 +17,8 @@ import { UpdateGoodsReceiptDto } from './dto/update-goods-receipt.dto';
 export class GoodsReceiptsController {
   constructor(private readonly goodsReceiptsService: GoodsReceiptsService) {}
 
-  @UsePipes(new ValidationPipe({ transform: true }))
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createGoodsReceiptDto: CreateGoodsReceiptDto) {
     return this.goodsReceiptsService.create(createGoodsReceiptDto);
   }
@@ -33,8 +33,8 @@ export class GoodsReceiptsController {
     return this.goodsReceiptsService.findOne(+id);
   }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id') id: string,
     @Body() updateGoodsReceiptDto: UpdateGoodsReceiptDto

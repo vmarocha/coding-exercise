@@ -19,8 +19,8 @@ export class SupplierInvoicesController {
     private readonly supplierInvoicesService: SupplierInvoicesService
   ) {}
 
-  @UsePipes(new ValidationPipe({ transform: true }))
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createSupplierInvoiceDto: CreateSupplierInvoiceDto) {
     return this.supplierInvoicesService.create(createSupplierInvoiceDto);
   }
@@ -35,8 +35,8 @@ export class SupplierInvoicesController {
     return this.supplierInvoicesService.findOne(+id);
   }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id') id: string,
     @Body() updateSupplierInvoiceDto: UpdateSupplierInvoiceDto

@@ -1,4 +1,3 @@
-// app/goods-receipts/create.tsx
 import GoodsReceiptForm from '../../components/GoodsReceiptForm';
 import { fetchParentItems, fetchPurchaseOrders } from '../../utils/api';
 

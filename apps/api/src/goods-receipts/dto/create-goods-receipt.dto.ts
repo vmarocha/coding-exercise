@@ -1,7 +1,9 @@
-import { IsNotEmpty, IsNumber, IsDateString, ValidateNested, ArrayMinSize } from 'class-validator';
+import { IsNotEmpty, IsNumber, ValidateNested, ArrayMinSize } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 
 class GoodsReceiptLineItemDto {
+  id: number;
+  
   @IsNotEmpty()
   @IsNumber()
   item_id: number;

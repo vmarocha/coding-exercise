@@ -34,9 +34,10 @@ const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items
             purchase_order_id: goodsReceipt?.purchase_order_id || 0,
             received_date: goodsReceipt?.received_date.substring(0, 10) || '',
             line_items: goodsReceipt?.line_items.map(lineItem => ({
+                id: lineItem.id,
                 item_id: lineItem.item_id,
                 quantity_received: lineItem.quantity_received,
-            })) || [{ item_id: 0, quantity_received: 0 }]
+            })) || [{id: 0, item_id: 0, quantity_received: 0 }]
         },
         resolver: yupResolver(validationSchema) as any,
     });
@@ -135,7 +136,7 @@ const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items
                         <button type="button" onClick={() => remove(index)} className="mt-2 text-red-500">Remove Line Item</button>
                     </div>
                 ))}
-                <button type="button" onClick={() => append({ item_id: 0, quantity_received: 0 })} className="mt-4 text-blue-500">Add Line Item</button>
+                <button type="button" onClick={() => append({ id: 0, item_id: 0, quantity_received: 0 })} className="mt-4 text-blue-500">Add Line Item</button>
             </div>
             <button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded-md shadow-sm">Submit</button>
         </form>

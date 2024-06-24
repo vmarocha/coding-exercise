@@ -14,7 +14,11 @@ export class SupplierInvoicesService {
         purchase_order_id: createSupplierInvoiceDto.purchase_order_id,
         invoice_date: createSupplierInvoiceDto.invoice_date,
         line_items: {
-          create: createSupplierInvoiceDto.line_items,
+          create: createSupplierInvoiceDto.line_items.map(item => ({
+            item_id: item.item_id,
+            quantity_invoiced: item.quantity_invoiced,
+            unit_cost: item.unit_cost
+          }))
         },
       },
     });
@@ -39,20 +43,30 @@ export class SupplierInvoicesService {
   }
 
   async update(id: number, updateSupplierInvoiceDto: UpdateSupplierInvoiceDto): Promise<SupplierInvoice> {
+    // Extracting item IDs from the DTO
+    const updatedLineItemIds = updateSupplierInvoiceDto.line_items.map(line_item => line_item.id);
+
+    // Step 1: Delete line items not present in the DTO
+    await this.prisma.supplierInvoiceLineItem.deleteMany({
+      where: {
+        supplier_invoice_id: id,
+        id: { notIn: updatedLineItemIds },
+      },
+    });
+
+    // Step 2: Upsert line items
     return this.prisma.supplierInvoice.update({
       where: { id },
       data: {
-        purchase_order_id: updateSupplierInvoiceDto.purchase_order_id,
+        purchase_order: {
+          connect: { id: updateSupplierInvoiceDto.purchase_order_id },
+        },
         invoice_date: updateSupplierInvoiceDto.invoice_date,
         line_items: {
-          // Delete existing line items and recreate
-          deleteMany: {
-            supplier_invoice_id: id,
-          },
-          create: updateSupplierInvoiceDto.line_items.map(item => ({
-            item_id: item.item_id,
-            quantity_invoiced: item.quantity_invoiced,
-            unit_cost: item.unit_cost,
+          upsert: updateSupplierInvoiceDto.line_items.map(line_item => ({
+            where: { id: line_item.id },
+            update: { item_id: line_item.item_id, quantity_invoiced: line_item.quantity_invoiced, unit_cost: line_item.unit_cost },
+            create: { item_id: line_item.item_id, quantity_invoiced: line_item.quantity_invoiced, unit_cost: line_item.unit_cost },
           })),
         },
       },

@@ -41,6 +41,7 @@ export interface GoodsReceipt {
 }
 
 export interface GoodsReceiptLineItem {
+    id: number;
     item_id: number;
     quantity_received: number;
 }
@@ -53,6 +54,7 @@ export interface SupplierInvoice {
 }
 
 export interface SupplierInvoiceLineItem {
+    id: number;
     item_id: number;
     quantity_invoiced: number;
     unit_cost: number;
