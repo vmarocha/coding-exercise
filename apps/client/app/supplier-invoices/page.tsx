@@ -2,8 +2,16 @@ import { SupplierInvoice } from '../interfaces';
 import Link from 'next/link';
 
 const fetchSupplierInvoices = async (): Promise<SupplierInvoice[]> => {
-  const res = await fetch('http://localhost:3100/api/supplier-invoices', { cache: 'no-cache' });
-  return res.json();
+  try {
+    const res = await fetch('http://localhost:3100/api/supplier-invoices', { cache: 'no-cache' });
+    if (!res.ok) {
+      throw new Error('Failed to fetch supplier invoices');
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching supplier invoices:', error);
+    return [];
+  }
 };
 
 const SupplierInvoicesPage = async () => {

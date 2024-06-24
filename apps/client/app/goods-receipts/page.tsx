@@ -3,8 +3,16 @@ import Link from 'next/link';
 import { GoodsReceipt } from '../interfaces';
 
 const fetchGoodsReceipts = async (): Promise<GoodsReceipt[]> => {
-  const res = await fetch('http://localhost:3100/api/goods-receipts', { cache: 'no-cache' });
-  return res.json();
+  try {
+    const res = await fetch('http://localhost:3100/api/goods-receipts', { cache: 'no-cache' });
+    if (!res.ok) {
+      throw new Error('Failed to fetch goods receipts');
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching goods receipts:', error);
+    return [];
+  }
 };
 
 const GoodsReceiptsPage = async () => {

@@ -2,13 +2,29 @@ import { SummaryCard } from './components/SummaryCard';
 import { PurchaseOrder } from '../interfaces';
 
 const fetchMatches = async (): Promise<PurchaseOrder[]> => {
-  const res = await fetch('http://localhost:3100/api/purchase-orders/matches', { cache: 'no-cache' });
-  return res.json();
+  try {
+    const res = await fetch('http://localhost:3100/api/purchase-orders/matches', { cache: 'no-cache' });
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Failed to fetch matches:', error);
+    return []; // Return an empty array or handle accordingly
+  }
 };
 
 const fetchAllPurchaseOrders = async (): Promise<PurchaseOrder[]> => {
-  const res = await fetch('http://localhost:3100/api/purchase-orders', { cache: 'no-cache' });
-  return res.json();
+  try {
+    const res = await fetch('http://localhost:3100/api/purchase-orders', { cache: 'no-cache' });
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Failed to fetch all purchase orders:', error);
+    return []; // Return an empty array or handle accordingly
+  }
 };
 
 const Dashboard = async () => {
