@@ -31,6 +31,11 @@ export class PurchaseOrdersController {
     return this.purchaseOrdersService.findAll(sortField, sortOrder);
   }
 
+  @Get('matches')
+  findMatches() {
+    return this.purchaseOrdersService.findMatches();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.purchaseOrdersService.findOne(+id);

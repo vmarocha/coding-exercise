@@ -23,6 +23,8 @@ export class PurchaseOrdersService {
       },
       include: {
         purchase_order_line_items: true,
+        good_receipts: true,
+        supplier_invoices: true,
       },
     });
 
@@ -86,5 +88,57 @@ export class PurchaseOrdersService {
     }
 
     return purchaseOrder;
+  }
+
+  // 3 way matching of Purchase Orders, Goods Receipts, and Supplier invoices
+  async findMatches(): Promise<PurchaseOrders[]> {
+    const purchaseOrders = await this.prisma.purchaseOrders.findMany({
+      include: {
+        purchase_order_line_items: true,
+        good_receipts: {
+          include: {
+            line_items: true,
+          },
+        },
+        supplier_invoices: {
+          include: {
+            line_items: true,
+          },
+        },
+      },
+    });
+
+    return purchaseOrders.filter(order => {
+      const poItems = order.purchase_order_line_items;
+
+      const grItems = order.good_receipts.flatMap(receipt => receipt.line_items);
+      const siItems = order.supplier_invoices.flatMap(invoice => invoice.line_items);
+
+      const poItemsMap = new Map(poItems.map(item => [item.item_id, item]));
+      const grItemsMap = new Map(grItems.map(item => [item.item_id, item]));
+      const siItemsMap = new Map(siItems.map(item => [item.item_id, item]));
+
+      for (const [itemId, poItem] of poItemsMap) {
+        const grItem = grItemsMap.get(itemId);
+        const siItem = siItemsMap.get(itemId);
+
+        // If there is no goods receipt line item or supplier invoice line item for the purchase order line item then match fails
+        if (!grItem || !siItem) {
+          return false;
+        }
+
+        // If the quantities don't match then match fails
+        if (poItem.quantity !== grItem.quantity_received || poItem.quantity !== siItem.quantity_invoiced) {
+          return false;
+        }
+
+        // If the costs of the individual items don't match then match fails
+        if (Number(poItem.unit_cost) !== Number(siItem.unit_cost)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
   }
 }

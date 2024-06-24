@@ -10,6 +10,7 @@ import { PurchaseOrder, Item } from '../interfaces';
 // This component is passed in the Purchase Order and whether we are creating or editing
 interface PurchaseOrderFormProps {
   purchaseOrder?: PurchaseOrder;
+  items: Item[];
   mode: 'create' | 'edit';
 }
 
@@ -38,22 +39,8 @@ const validationSchema = Yup.object().shape({
   total_cost: Yup.number().notRequired(),
 });
 
-// Fetch items to use in the dropdown of the purchase order line items
-// TODO: This can be moved to a Server Component
-const fetchItems = async (): Promise<Item[]> => {
-  const res = await fetch('http://localhost:3100/api/parent-items');
-  const data = await res.json();
-  const items = data.flatMap((parent: { items: Item[] }) => parent.items);
-  return [{ id: 0, name: 'Select an item', sku: '', price: 0 }, ...items];
-};
-
-const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mode }) => {
-  const [items, setItems] = useState<Item[]>([]);
+const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, items, mode }) => {
   const [serverErrors, setServerErrors] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetchItems().then(setItems);
-  }, []);
 
   // Initialize the form with react-hook-form
   const { control, handleSubmit, formState: { errors } } = useForm<PurchaseOrder>({
@@ -150,6 +137,7 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, mo
               defaultValue={field.item_id}
               render={({ field: selectField }) => (
                 <select {...selectField} className="mt-1 block w-full border border-accent rounded-md shadow-sm">
+                  <option value="">Select an item</option>
                   {items.map((item) => (
                     <option key={item.id} value={item.id}>{item.name}</option>
                   ))}

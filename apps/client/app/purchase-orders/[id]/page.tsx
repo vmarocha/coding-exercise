@@ -1,5 +1,6 @@
 import { PurchaseOrder } from '../../interfaces';
 import PurchaseOrderForm from "../../components/PurchaseOrderForm";
+import { fetchParentItems } from '../../utils/api';
 
 const fetchPurchaseOrder = async (id: string): Promise<PurchaseOrder> => {
   const res = await fetch(`http://localhost:3100/api/purchase-orders/${id}`, { cache: 'no-cache' });
@@ -17,11 +18,12 @@ interface EditPurchaseOrderPageProps {
 
 const EditPurchaseOrderPage = async ({ params }: EditPurchaseOrderPageProps) => {
   const purchaseOrder = await fetchPurchaseOrder(params.id);
+  const items = await fetchParentItems();
 
   return (
     <div>
       <h1 className="text-2xl">Edit Purchase Order</h1>
-      <PurchaseOrderForm purchaseOrder={purchaseOrder} mode="edit" />
+      <PurchaseOrderForm purchaseOrder={purchaseOrder} items={items} mode="edit" />
     </div>
   );
 };

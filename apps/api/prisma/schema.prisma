@@ -19,6 +19,9 @@ model Item {
   updated_at     DateTime?
 
   purchase_order_line_items PurchaseOrderLineItems[]
+  good_receipt_line_items GoodsReceiptLineItem[]
+  supplier_invoice_line_items SupplierInvoiceLineItem[]
+
   @@map("items")
 }
 
@@ -56,6 +59,60 @@ model PurchaseOrders {
   updated_at             DateTime?
 
   purchase_order_line_items PurchaseOrderLineItems[]
+  good_receipts GoodsReceipt[]
+  supplier_invoices SupplierInvoice[]
 
   @@map("purchase_orders")
+}
+
+model GoodsReceipt {
+  id                Int                 @id @default(autoincrement())
+  purchase_order    PurchaseOrders      @relation(fields: [purchase_order_id], references: [id])
+  purchase_order_id Int
+  received_date     DateTime
+  line_items        GoodsReceiptLineItem[]
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+
+  @@map("goods_receipt")
+}
+
+model GoodsReceiptLineItem {
+  id                Int             @id @default(autoincrement())
+  goods_receipt     GoodsReceipt    @relation(fields: [goods_receipt_id], references: [id])
+  goods_receipt_id  Int
+  item              Item   @relation(fields: [item_id], references: [id])
+  item_id           Int
+  quantity_received Int
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @updatedAt
+
+  @@map("goods_receipt_line_item")
+}
+
+model SupplierInvoice {
+  id                Int                 @id @default(autoincrement())
+  purchase_order    PurchaseOrders      @relation(fields: [purchase_order_id], references: [id])
+  purchase_order_id Int
+  invoice_date      DateTime
+  line_items        SupplierInvoiceLineItem[]
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+
+  @@map("supplier_invoice")
+
+}
+
+model SupplierInvoiceLineItem {
+  id                Int                  @id @default(autoincrement())
+  supplier_invoice  SupplierInvoice      @relation(fields: [supplier_invoice_id], references: [id])
+  supplier_invoice_id Int
+  item              Item   @relation(fields: [item_id], references: [id])
+  item_id           Int
+  quantity_invoiced Int
+  unit_cost         Decimal
+  created_at        DateTime             @default(now())
+  updated_at        DateTime             @updatedAt
+
+  @@map("supplier_invoice_line_item")
 }
