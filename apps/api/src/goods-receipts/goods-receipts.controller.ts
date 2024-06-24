@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
+  BadRequestException
 } from '@nestjs/common';
 import { GoodsReceiptsService } from './goods-receipts.service';
 import { CreateGoodsReceiptDto } from './dto/create-goods-receipt.dto';
