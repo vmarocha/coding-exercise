@@ -72,8 +72,4 @@ export class GoodsReceiptsService {
     });
     
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} goodsReceipt`;
-  }
 }

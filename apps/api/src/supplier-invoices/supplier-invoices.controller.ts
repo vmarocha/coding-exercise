@@ -43,9 +43,4 @@ export class SupplierInvoicesController {
   ) {
     return this.supplierInvoicesService.update(+id, updateSupplierInvoiceDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.supplierInvoicesService.remove(+id);
-  }
 }

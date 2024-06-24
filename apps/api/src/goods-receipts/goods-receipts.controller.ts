@@ -41,9 +41,4 @@ export class GoodsReceiptsController {
   ) {
     return this.goodsReceiptsService.update(+id, updateGoodsReceiptDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.goodsReceiptsService.remove(+id);
-  }
 }
