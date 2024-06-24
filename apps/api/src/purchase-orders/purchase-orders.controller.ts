@@ -7,7 +7,8 @@ import {
   Param,
   Query,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
+  BadRequestException
 } from '@nestjs/common';
 import { PurchaseOrdersService } from './purchase-orders.service';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
