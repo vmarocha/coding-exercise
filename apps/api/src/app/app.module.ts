@@ -6,7 +6,6 @@ import { ParentItemsModule } from '../parent-items/parent-items.module';
 import { PurchaseOrdersModule } from '../purchase-orders/purchase-orders.module';
 import { GoodsReceiptsModule } from '../goods-receipts/goods-receipts.module';
 import { SupplierInvoicesModule } from '../supplier-invoices/supplier-invoices.module';
-import { ThreeWayMatchModule } from '../three-way-match/three-way-match.module';
 
 @Module({
   imports: [
@@ -14,7 +13,6 @@ import { ThreeWayMatchModule } from '../three-way-match/three-way-match.module';
     PurchaseOrdersModule,
     GoodsReceiptsModule,
     SupplierInvoicesModule,
-    ThreeWayMatchModule
   ],
   controllers: [AppController],
   providers: [AppService],
