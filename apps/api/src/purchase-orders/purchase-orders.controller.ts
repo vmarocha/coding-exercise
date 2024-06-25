@@ -40,7 +40,7 @@ export class PurchaseOrdersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     const numericId = Number(id);
-    if (isNaN(numericId)) {
+    if (Number.isNaN(numericId)) {
       throw new BadRequestException('Invalid ID format');
     }
     return this.purchaseOrdersService.findOne(numericId);

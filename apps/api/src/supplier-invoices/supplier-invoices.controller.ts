@@ -34,7 +34,7 @@ export class SupplierInvoicesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     const numericId = Number(id);
-    if (isNaN(numericId)) {
+    if (Number.isNaN(numericId)) {
       throw new BadRequestException('Invalid ID format');
     }
     return this.supplierInvoicesService.findOne(numericId);
