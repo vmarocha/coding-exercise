@@ -5,12 +5,13 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { SupplierInvoice, Item, PurchaseOrder } from '../interfaces';
+import { Mode } from '../utils/enums';
 
 interface SupplierInvoiceFormProps {
   supplierInvoice?: SupplierInvoice;
   items: Item[];
   purchaseOrders: PurchaseOrder[];
-  mode: 'create' | 'edit';
+  mode: Mode.CREATE | Mode.EDIT;
 }
 
 // Define the validation schema using Yup
@@ -51,10 +52,10 @@ const SupplierInvoiceForm: React.FC<SupplierInvoiceFormProps> = ({ supplierInvoi
 
   // On form submission, either call the api that will create a Supplier Invoice or the api that will update a Supplier Invoice
   const onSubmit = async (data: Omit<SupplierInvoice, 'id'>) => {
-    const url = mode === 'create'
+    const url = mode === Mode.CREATE
       ? 'http://localhost:3100/api/supplier-invoices'
       : `http://localhost:3100/api/supplier-invoices/${supplierInvoice?.id}`;
-    const method = mode === 'create' ? 'POST' : 'PATCH';
+    const method = mode === Mode.CREATE ? 'POST' : 'PATCH';
 
     try {
       const response = await fetch(url, {

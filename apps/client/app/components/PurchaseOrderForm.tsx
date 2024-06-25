@@ -6,12 +6,13 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { PurchaseOrder, Item } from '../interfaces';
+import { Mode } from '../utils/enums';
 
 // This component is passed in the Purchase Order and whether we are creating or editing
 interface PurchaseOrderFormProps {
   purchaseOrder?: PurchaseOrder;
   items: Item[];
-  mode: 'create' | 'edit';
+  mode: Mode.CREATE | Mode.EDIT;
 }
 
 // Define the validation schema using Yup
@@ -66,10 +67,10 @@ const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({ purchaseOrder, it
 
   // On form submission, either call the api that will create a Purchase Order or the api that will update a Purchase Order
   const onSubmit = async (data: Omit<PurchaseOrder, 'id'>) => {
-    const url = mode === 'create'
+    const url = mode === Mode.CREATE
       ? 'http://localhost:3100/api/purchase-orders'
       : `http://localhost:3100/api/purchase-orders/${purchaseOrder?.id}`;
-    const method = mode === 'create' ? 'POST' : 'PATCH';
+    const method = mode === Mode.CREATE ? 'POST' : 'PATCH';
 
     try {
       const response = await fetch(url, {

@@ -5,12 +5,13 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { GoodsReceipt, Item, PurchaseOrder } from '../interfaces';
+import { Mode } from '../utils/enums';
 
 interface GoodsReceiptFormProps {
     goodsReceipt?: GoodsReceipt;
     items: Item[];
     purchaseOrders: PurchaseOrder[];
-    mode: 'create' | 'edit';
+    mode: Mode.CREATE | Mode.EDIT;
 }
 
 // Define the validation schema using Yup
@@ -49,10 +50,10 @@ const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items
 
     // On form submission, either call the api that will create a Goods Receipt or the api that will update a Goods Receipt
     const onSubmit = async (data: Omit<GoodsReceipt, 'id'>) => {
-        const url = mode === 'create'
+        const url = mode === Mode.CREATE
             ? 'http://localhost:3100/api/goods-receipts'
-            : `http://localhost:3100/api/goods-receipts/${goodsReceipt?.id}`;
-        const method = mode === 'create' ? 'POST' : 'PATCH';
+            : 'http://localhost:3100/api/goods-receipts/${goodsReceipt?.id}';
+        const method = mode === Mode.CREATE ? 'POST' : 'PATCH';
 
         try {
             const response = await fetch(url, {
