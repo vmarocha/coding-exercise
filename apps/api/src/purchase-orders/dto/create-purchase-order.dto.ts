@@ -1,19 +1,27 @@
-import { IsDateString, IsString, IsArray, IsNumber, ValidateNested, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsString,
+  IsArray,
+  IsNumber,
+  ValidateNested,
+  Min,
+} from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 
 export class PurchaseOrderLineItemDto {
-    id: number;
-  
-    @IsNumber()
-    @Min(1)
-    item_id: number;
-    
-    @IsNumber()
-    quantity: number;
-  
-    @IsNumber()
-    unit_cost: number;
-  }
+  @IsNumber()
+  id: number;
+
+  @IsNumber()
+  @Min(1)
+  item_id: number;
+
+  @IsNumber()
+  quantity: number;
+
+  @IsNumber()
+  unit_cost: number;
+}
 
 export class CreatePurchaseOrderDto {
   @IsString()
@@ -28,5 +36,5 @@ export class CreatePurchaseOrderDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PurchaseOrderLineItemDto)
-  purchase_order_line_items: PurchaseOrderLineItemDto[]; // Define a proper DTO for line items if needed
+  purchase_order_line_items: PurchaseOrderLineItemDto[];
 }

@@ -1,9 +1,15 @@
-import { IsNotEmpty, IsNumber, ValidateNested, ArrayMinSize } from 'class-validator';
-import { Type, Transform} from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  ValidateNested,
+  ArrayMinSize,
+} from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 
 class SupplierInvoiceLineItemDto {
+  @IsNumber()
   id: number;
-  
+
   @IsNotEmpty()
   @IsNumber()
   item_id: number;
