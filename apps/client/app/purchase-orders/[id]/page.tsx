@@ -1,6 +1,7 @@
 import { PurchaseOrder } from '../../interfaces';
 import PurchaseOrderForm from "../../components/PurchaseOrderForm";
 import { fetchParentItems } from '../../utils/api';
+import { Mode } from '../../utils/enums';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -25,7 +26,7 @@ const EditPurchaseOrderPage = async ({ params }: EditPurchaseOrderPageProps) => 
   return (
     <div>
       <h1 className="text-2xl">Edit Purchase Order</h1>
-      <PurchaseOrderForm purchaseOrder={purchaseOrder} items={items} mode="edit" />
+      <PurchaseOrderForm purchaseOrder={purchaseOrder} items={items} mode={Mode.EDIT} />
     </div>
   );
 };

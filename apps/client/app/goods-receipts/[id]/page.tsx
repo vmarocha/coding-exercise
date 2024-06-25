@@ -2,6 +2,7 @@
 import GoodsReceiptForm from '../../components/GoodsReceiptForm';
 import { fetchParentItems, fetchPurchaseOrders } from '../../utils/api';
 import { GoodsReceipt } from '../../interfaces';
+import { Mode } from '../../utils/enums';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -25,7 +26,7 @@ export default async function EditGoodsReceiptPage({ params }: EditGoodsReceiptP
   return (
     <div>
       <h1 className="text-2xl mb-4">Edit Goods Receipt</h1>
-      <GoodsReceiptForm goodsReceipt={goodsReceipt} items={items} purchaseOrders={purchaseOrders} mode="edit" />
+      <GoodsReceiptForm goodsReceipt={goodsReceipt} items={items} purchaseOrders={purchaseOrders} mode={Mode.EDIT} />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 import SupplierInvoiceForm from '../../components/SupplierInvoiceForm';
 import { fetchParentItems, fetchPurchaseOrders } from '../../utils/api';
 import { SupplierInvoice } from '../../interfaces';
+import { Mode } from '../../utils/enums';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -25,7 +26,7 @@ export default async function EditSupplierInvoicePage({ params }: EditSupplierIn
   return (
     <div>
       <h1 className="text-2xl mb-4">Edit Supplier Invoice</h1>
-      <SupplierInvoiceForm supplierInvoice={supplierInvoice} items={items} purchaseOrders={purchaseOrders} mode="edit" />
+      <SupplierInvoiceForm supplierInvoice={supplierInvoice} items={items} purchaseOrders={purchaseOrders} mode={Mode.EDIT} />
     </div>
   );
 }
