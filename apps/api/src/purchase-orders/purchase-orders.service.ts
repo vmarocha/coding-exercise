@@ -53,6 +53,18 @@ export class PurchaseOrdersService {
   }
 
   async update(id: number, updatePurchaseOrderDto: UpdatePurchaseOrderDto): Promise<PurchaseOrders> {    
+    // Extracting item IDs from the DTO
+    const updatedLineItemIds = updatePurchaseOrderDto.purchase_order_line_items.map(line_item => line_item.id);
+
+    // Step 1: Delete line items not present in the DTO
+    await this.prisma.purchaseOrderLineItems.deleteMany({
+      where: {
+        purchase_order_id: id,
+        id: { notIn: updatedLineItemIds },
+      },
+    });
+
+    // Step 2: Upsert line items
     return this.prisma.purchaseOrders.update({
       where: { id },
       data: {
@@ -60,13 +72,10 @@ export class PurchaseOrdersService {
         order_date: updatePurchaseOrderDto.order_date,
         expected_delivery_date: updatePurchaseOrderDto.expected_delivery_date,
         purchase_order_line_items: {
-          deleteMany: {
-            purchase_order_id: id,
-          },
-          create: updatePurchaseOrderDto.purchase_order_line_items.map(item => ({
-            item_id: item.item_id,
-            quantity: item.quantity,
-            unit_cost: item.unit_cost,
+          upsert: updatePurchaseOrderDto.purchase_order_line_items.map(line_item => ({
+            where: { id: line_item.id },
+            update: { item_id: line_item.item_id, quantity: line_item.quantity, unit_cost: line_item.unit_cost },
+            create: { item_id: line_item.item_id, quantity: line_item.quantity, unit_cost: line_item.unit_cost },
           })),
         },
       },

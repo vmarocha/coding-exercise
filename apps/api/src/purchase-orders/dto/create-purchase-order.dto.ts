@@ -2,6 +2,8 @@ import { IsDateString, IsString, IsArray, IsNumber, ValidateNested, Min } from '
 import { Type, Transform } from 'class-transformer';
 
 export class PurchaseOrderLineItemDto {
+    id: number;
+  
     @IsNumber()
     @Min(1)
     item_id: number;
