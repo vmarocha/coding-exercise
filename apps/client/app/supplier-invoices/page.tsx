@@ -1,9 +1,11 @@
 import { SupplierInvoice } from '../interfaces';
 import Link from 'next/link';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const fetchSupplierInvoices = async (): Promise<SupplierInvoice[]> => {
   try {
-    const res = await fetch('http://localhost:3100/api/supplier-invoices', { cache: 'no-cache' });
+    const res = await fetch(`${API_BASE_URL}/supplier-invoices`, { cache: 'no-cache' });
     if (!res.ok) {
       throw new Error('Failed to fetch supplier invoices');
     }

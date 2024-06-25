@@ -2,9 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { GoodsReceipt } from '../interfaces';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const fetchGoodsReceipts = async (): Promise<GoodsReceipt[]> => {
   try {
-    const res = await fetch('http://localhost:3100/api/goods-receipts', { cache: 'no-cache' });
+    const res = await fetch(`${API_BASE_URL}/goods-receipts`, { cache: 'no-cache' });
     if (!res.ok) {
       throw new Error('Failed to fetch goods receipts');
     }

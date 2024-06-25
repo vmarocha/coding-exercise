@@ -1,7 +1,9 @@
 import { Item, PurchaseOrder } from "../interfaces";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export const fetchParentItems = async (): Promise<Item[]> => {
-  const res = await fetch('http://localhost:3100/api/parent-items', {
+  const res = await fetch(`${API_BASE_URL}/parent-items`, {
     cache: 'no-cache',
   });
   if (!res.ok) {
@@ -12,7 +14,7 @@ export const fetchParentItems = async (): Promise<Item[]> => {
 };
 
 export const fetchPurchaseOrders = async (): Promise<PurchaseOrder[]> => {
-  const res = await fetch('http://localhost:3100/api/purchase-orders', {
+  const res = await fetch(`${API_BASE_URL}/purchase-orders`, {
     cache: 'no-cache',
   });
   if (!res.ok) {

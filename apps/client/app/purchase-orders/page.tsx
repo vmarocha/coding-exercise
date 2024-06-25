@@ -3,13 +3,15 @@ import Link from 'next/link';
 
 import MatchTooltip from '../components/MatchTooltip';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const fetchPurchaseOrders = async (sortField: string, sortOrder: string): Promise<PurchaseOrder[]> => {
-  const res = await fetch(`http://localhost:3100/api/purchase-orders?sortField=${sortField}&sortOrder=${sortOrder}`, { cache: 'no-cache' });
+  const res = await fetch(`${API_BASE_URL}/purchase-orders?sortField=${sortField}&sortOrder=${sortOrder}`, { cache: 'no-cache' });
   return res.json();
 };
 
 const fetchMatches = async (): Promise<{ id: number, goodsReceiptMatch: boolean, supplierInvoiceMatch: boolean, reasons: string[] }[]> => {
-  const res = await fetch('http://localhost:3100/api/purchase-orders/matches', { cache: 'no-cache' });
+  const res = await fetch(`${API_BASE_URL}/purchase-orders/matches`, { cache: 'no-cache' });
   return res.json();
 };
 

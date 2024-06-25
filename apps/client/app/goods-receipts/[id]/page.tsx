@@ -3,8 +3,10 @@ import GoodsReceiptForm from '../../components/GoodsReceiptForm';
 import { fetchParentItems, fetchPurchaseOrders } from '../../utils/api';
 import { GoodsReceipt } from '../../interfaces';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const fetchGoodsReceipt = async (id: string): Promise<GoodsReceipt> => {
-  const res = await fetch(`http://localhost:3100/api/goods-receipts/${id}`, { cache: 'no-cache' });
+  const res = await fetch(`${API_BASE_URL}/goods-receipts/${id}`, { cache: 'no-cache' });
   if (!res.ok) {
     throw new Error('Failed to fetch goods receipt');
   }

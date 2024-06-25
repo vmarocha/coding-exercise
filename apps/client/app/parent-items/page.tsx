@@ -1,7 +1,9 @@
 import { ParentItem, Item } from "../interfaces";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 async function getData(): Promise<ParentItem[]> {
-  const res = await fetch('http://localhost:3100/api/parent-items', {cache: 'no-cache'});
+  const res = await fetch(`${API_BASE_URL}/parent-items`, {cache: 'no-cache'});
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }

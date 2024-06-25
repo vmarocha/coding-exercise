@@ -3,8 +3,10 @@ import SupplierInvoiceForm from '../../components/SupplierInvoiceForm';
 import { fetchParentItems, fetchPurchaseOrders } from '../../utils/api';
 import { SupplierInvoice } from '../../interfaces';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const fetchSupplierInvoice = async (id: string): Promise<SupplierInvoice> => {
-  const res = await fetch(`http://localhost:3100/api/supplier-invoices/${id}`, { cache: 'no-cache' });
+  const res = await fetch(`${API_BASE_URL}/supplier-invoices/${id}`, { cache: 'no-cache' });
   if (!res.ok) {
     throw new Error('Failed to fetch supplier invoice');
   }
