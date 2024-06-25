@@ -23,7 +23,7 @@ export class PurchaseOrdersService {
       },
       include: {
         purchase_order_line_items: true,
-        good_receipts: true,
+        goods_receipts: true,
         supplier_invoices: true,
       },
     });

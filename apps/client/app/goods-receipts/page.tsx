@@ -37,7 +37,7 @@ const GoodsReceiptsPage = async () => {
             <tr key={receipt.id} className="border-b border-accent">
               <td className="p-4 text-accent-content">{receipt.id}</td>
               <td className="p-4 text-accent-content">{receipt.purchase_order_id}</td>
-              <td className="p-4 text-accent-content">{receipt.received_date.substring(0, 10)}</td>
+              <td className="p-4 text-accent-content">{receipt.received_at.substring(0, 10)}</td>
               <td className="p-4">
                 <Link href={`/goods-receipts/${receipt.id}`} className="text-blue-500 hover:underline">Edit</Link>
               </td>

@@ -19,10 +19,12 @@ interface EditGoodsReceiptPageProps {
 }
 
 export default async function EditGoodsReceiptPage({ params }: EditGoodsReceiptPageProps) {
-  const goodsReceipt = await fetchGoodsReceipt(params.id);
-  const items = await fetchParentItems();
-  const purchaseOrders = await fetchPurchaseOrders();
-
+  const [goodsReceipt, items, purchaseOrders] = await Promise.all([
+    fetchGoodsReceipt(params.id),
+    fetchParentItems(),
+    fetchPurchaseOrders()
+  ]);
+  
   return (
     <div>
       <h1 className="text-2xl mb-4">Edit Goods Receipt</h1>

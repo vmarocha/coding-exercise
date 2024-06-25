@@ -19,7 +19,7 @@ interface GoodsReceiptFormProps {
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
     purchase_order_id: Yup.number().required('Purchase Order ID is required').positive('Please select a valid purchase order'),
-    received_date: Yup.string().required('Received Date is required'),
+    received_at: Yup.string().required('Received Date is required'),
     line_items: Yup.array().of(
         Yup.object().shape({
             item_id: Yup.number().required('Item is required').positive('Please select a valid item'),
@@ -35,7 +35,7 @@ const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items
     const { control, handleSubmit, formState: { errors } } = useForm<GoodsReceipt>({
         defaultValues: {
             purchase_order_id: goodsReceipt?.purchase_order_id || 0,
-            received_date: goodsReceipt?.received_date.substring(0, 10) || '',
+            received_at: goodsReceipt?.received_at.substring(0, 10) || '',
             line_items: goodsReceipt?.line_items.map(lineItem => ({
                 id: lineItem.id,
                 item_id: lineItem.item_id,
@@ -104,11 +104,11 @@ const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items
             <div className="mb-4">
                 <label className="block text-accent-content">Received Date</label>
                 <Controller
-                    name="received_date"
+                    name="received_at"
                     control={control}
                     render={({ field }) => <input type="date" {...field} className="mt-1 block w-full border border-accent rounded-md shadow-sm" />}
                 />
-                {errors.received_date && <p className="text-red-500 text-xs">{errors.received_date.message}</p>}
+                {errors.received_at && <p className="text-red-500 text-xs">{errors.received_at.message}</p>}
             </div>
             <div className="mb-4">
                 <h3 className="text-lg font-semibold text-accent-content">Line Items</h3>

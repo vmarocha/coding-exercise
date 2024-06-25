@@ -19,7 +19,7 @@ export class CreateGoodsReceiptDto {
   purchase_order_id: number;
 
   @Transform(({ value }) => new Date(value).toISOString())
-  received_date: string;
+  received_at: string;
 
   @ValidateNested({ each: true })
   @ArrayMinSize(1)

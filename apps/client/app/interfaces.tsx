@@ -22,7 +22,7 @@ export interface PurchaseOrder {
     total_quantity: number;
     total_cost: number;
 
-    good_receipts: GoodsReceipt[]
+    goods_receipts: GoodsReceipt[]
     supplier_invoices: SupplierInvoice[]
 }
 
@@ -36,7 +36,7 @@ export interface PurchaseOrderLineItem {
 export interface GoodsReceipt {
     id: number;
     purchase_order_id: number;
-    received_date: string;
+    received_at: string;
     line_items: GoodsReceiptLineItem[];
 }
 

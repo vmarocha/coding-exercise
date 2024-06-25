@@ -12,7 +12,7 @@ export class GoodsReceiptsService {
     return this.prisma.goodsReceipt.create({
       data: {
         purchase_order_id: createGoodsReceiptDto.purchase_order_id,
-        received_date: createGoodsReceiptDto.received_date,
+        received_at: createGoodsReceiptDto.received_at,
         line_items: {
           create: createGoodsReceiptDto.line_items.map(item => ({
             item_id: item.item_id,
@@ -60,7 +60,7 @@ export class GoodsReceiptsService {
         purchase_order: {
           connect: { id: updateGoodsReceiptDto.purchase_order_id },
         },
-        received_date: updateGoodsReceiptDto.received_date,
+        received_at: updateGoodsReceiptDto.received_at,
         line_items: {
           upsert: updateGoodsReceiptDto.line_items.map(line_item => ({
             where: { id: line_item.id },
