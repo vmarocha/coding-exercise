@@ -19,13 +19,13 @@ interface EditSupplierInvoicePageProps {
 }
 
 export default async function EditSupplierInvoicePage({ params }: EditSupplierInvoicePageProps) {
-  let goodsReceipt: SupplierInvoice;
+  let supplierInvoice: SupplierInvoice;
   let items: Item[] = [];
   let purchaseOrders: PurchaseOrder[] = [];
   
   try {
-    [goodsReceipt, items, purchaseOrders] = await Promise.all([
-      fetchGoodsReceipt(params.id),
+    [supplierInvoice, items, purchaseOrders] = await Promise.all([
+      fetchSupplierInvoice(params.id),
       fetchParentItems(),
       fetchPurchaseOrders()
     ]);
