@@ -7,13 +7,25 @@ import MatchTooltip from '../components/MatchTooltip';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const fetchPurchaseOrders = async (sortField: string, sortOrder: string): Promise<PurchaseOrder[]> => {
-  const res = await fetch(`${API_BASE_URL}/purchase-orders?sortField=${sortField}&sortOrder=${sortOrder}`, { cache: 'no-cache' });
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/purchase-orders?sortField=${sortField}&sortOrder=${sortOrder}`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`Failed to fetch purchase orders: ${res.status}`);
+    return res.json();
+  } catch (error) {
+    console.error('Failed to fetch purchase orders:', error);
+    return [];
+  }
 };
 
 const fetchMatches = async (): Promise<{ id: number, goodsReceiptMatch: boolean, supplierInvoiceMatch: boolean, reasons: string[] }[]> => {
-  const res = await fetch(`${API_BASE_URL}/purchase-orders/matches`, { cache: 'no-cache' });
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/purchase-orders/matches`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`Failed to fetch matches: ${res.status}`);
+    return res.json();
+  } catch (error) {
+    console.error('Failed to fetch matches:', error);
+    return [];
+  }
 };
 
 const PurchaseOrdersPage = async ({ searchParams }: { searchParams: { sortField?: string, sortOrder?: string } }) => {
