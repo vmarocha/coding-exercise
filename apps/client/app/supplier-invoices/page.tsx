@@ -1,3 +1,4 @@
+import React from 'react';
 import { SupplierInvoice } from '../interfaces';
 import Link from 'next/link';
 

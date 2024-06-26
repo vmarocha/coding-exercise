@@ -1,3 +1,4 @@
+import React from 'react';
 import { PurchaseOrder } from '../interfaces';
 import Link from 'next/link';
 
@@ -55,7 +56,6 @@ const PurchaseOrdersPage = async ({ searchParams }: { searchParams: { sortField?
         <tbody>
           {purchaseOrders.map((purchaseOrder) => {
             const match = matches.find(m => m.id === purchaseOrder.id);
-            console.log(matches)
             return (
               <tr key={purchaseOrder.id} className="border-b border-accent">
                 <td className="p-4 text-accent-content">{purchaseOrder.id}</td>

@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { GoodsReceipt, Item, PurchaseOrder } from '../interfaces';
 import { Mode } from '../utils/enums';
+import { useRouter } from 'next/navigation';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -30,6 +31,8 @@ const validationSchema = Yup.object().shape({
 
 const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items, purchaseOrders, mode }) => {
     const [serverErrors, setServerErrors] = useState<string[]>([]);
+
+    const router = useRouter();
 
     // Initialize the form with react-hook-form
     const { control, handleSubmit, formState: { errors } } = useForm<GoodsReceipt>({
@@ -68,8 +71,7 @@ const GoodsReceiptForm: React.FC<GoodsReceiptFormProps> = ({ goodsReceipt, items
                 const errorData = await response.json();
                 setServerErrors(errorData.message || ['An error occurred']);
             } else {
-                // Navigate to the list page and reload to ensure server-side rendering takes place
-                window.location.href = '/goods-receipts';
+                router.push('/goods-receipts');
             }
         } catch (error) {
             setServerErrors(['An error occurred']);
