@@ -19,11 +19,19 @@ interface EditGoodsReceiptPageProps {
 }
 
 export default async function EditGoodsReceiptPage({ params }: EditGoodsReceiptPageProps) {
-  const [goodsReceipt, items, purchaseOrders] = await Promise.all([
-    fetchGoodsReceipt(params.id),
-    fetchParentItems(),
-    fetchPurchaseOrders()
-  ]);
+  let goodsReceipt: GoodsReceipt;
+  let items: Item[] = [];
+  let purchaseOrders: PurchaseOrder[] = [];
+
+  try {
+    [goodsReceipt, items, purchaseOrders] = await Promise.all([
+      fetchGoodsReceipt(params.id),
+      fetchParentItems(),
+      fetchPurchaseOrders()
+    ]);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
   
   return (
     <div>

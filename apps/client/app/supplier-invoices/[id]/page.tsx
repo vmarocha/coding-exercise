@@ -19,9 +19,19 @@ interface EditSupplierInvoicePageProps {
 }
 
 export default async function EditSupplierInvoicePage({ params }: EditSupplierInvoicePageProps) {
-  const supplierInvoice = await fetchSupplierInvoice(params.id);
-  const items = await fetchParentItems();
-  const purchaseOrders = await fetchPurchaseOrders();
+  let goodsReceipt: SupplierInvoice;
+  let items: Item[] = [];
+  let purchaseOrders: PurchaseOrder[] = [];
+  
+  try {
+    [goodsReceipt, items, purchaseOrders] = await Promise.all([
+      fetchGoodsReceipt(params.id),
+      fetchParentItems(),
+      fetchPurchaseOrders()
+    ]);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 
   return (
     <div>
